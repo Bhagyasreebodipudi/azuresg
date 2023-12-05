@@ -1,0 +1,29 @@
+trigger:
+- main
+
+pr: 
+- '*'
+
+jobs:
+- job: CreateSecurityGroupsAndAssignOwners
+  pool:
+    vmImage: 'windows-latest'
+
+  steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '3.1.x'
+      installationPath: $(Agent.ToolsDirectory)/dotnet
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      azureResourceManagerConnection: 'YourAzureServiceConnection'  # Replace with your Azure service connection name
+      subscriptionId: 'your-subscription-id'  # Replace with your Azure subscription ID
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: 'your-resource-group-name'
+      location: 'your-region'  # Replace with your desired Azure region
+      templateLocation: 'Linked artifact'
+      csmFile: '$(System.DefaultWorkingDirectory)/path/to/your/arm-template.json'
+      deploymentMode: 'Incremental'
+      overrideParameters: '-securityGroupName your-security-group-name -owner1EmailAddress owner1@example.com -owner2EmailAddress owner2@example.com'
