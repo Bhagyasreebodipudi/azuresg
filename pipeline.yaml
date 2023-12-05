@@ -7,7 +7,7 @@ pr:
 jobs:
 - job: CreateSecurityGroupsAndAssignOwners
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'ubuntu-latest'
 
   steps:
   - task: UseDotNet@2
@@ -18,11 +18,11 @@ jobs:
 
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
-      azureResourceManagerConnection: 'YourAzureServiceConnection'  # Replace with your Azure service connection name
-      subscriptionId: 'your-subscription-id'  # Replace with your Azure subscription ID
+      azureResourceManagerConnection: 'YourAzureServiceConnection'  
+      subscriptionId: '3da2a899-475f-4d84-ae1a-d1f2003af1c2'  
       action: 'Create Or Update Resource Group'
-      resourceGroupName: 'your-resource-group-name'
-      location: 'your-region'  # Replace with your desired Azure region
+      resourceGroupName: 'securityrg123'
+      location: 'East US'  
       templateLocation: 'Linked artifact'
       csmFile: '$(System.DefaultWorkingDirectory)/path/to/your/arm-template.json'
       deploymentMode: 'Incremental'
