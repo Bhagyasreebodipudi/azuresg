@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2018-05-01",
+      "name": "[parameters('resourceGroupName')]",
+      "location": "[parameters('location')]",
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "nestedDeployment",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/path/to/your/template.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "securityGroupName": { "value": "[parameters('securityGroupName')]" },
+          "owner1EmailAddress": { "value": "[parameters('owner1EmailAddress')]" },
+          "owner2EmailAddress": { "value": "[parameters('owner2EmailAddress')]" }
+        }
+      }
+    }
+  ]
+}
